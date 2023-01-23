@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from "react"
+import { Link } from "react-router-dom"
 const Sidebar = ({ currentUser }) => {
   return (
     <div className="sidebar bg-info">
@@ -45,7 +45,7 @@ const Sidebar = ({ currentUser }) => {
 
           <p className="title">USER</p>
           <li>
-            <Link to="/" className="link">
+            <Link to="/profile" className="link">
               <i className="fa-solid fa-user"></i>
               <span>Profile</span>
             </Link>
@@ -53,7 +53,7 @@ const Sidebar = ({ currentUser }) => {
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

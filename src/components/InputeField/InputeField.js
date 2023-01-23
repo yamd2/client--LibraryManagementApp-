@@ -9,3 +9,4 @@ export const InputeField = ({ label, ...rest }) => {
     </Form.Group>
   )
 }
+;<input type="text" />

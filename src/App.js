@@ -1,12 +1,13 @@
-import "./App.css";
-import { ToastContainer } from "react-toastify";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Books from "./pages/Books";
-import AddBook from "./pages/AddBook";
-import MyBooks from "./pages/MyBooks";
-import Transactions from "./pages/Transactions";
+import "./App.css"
+import { ToastContainer } from "react-toastify"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+import Books from "./pages/Books"
+import AddBook from "./pages/AddBook"
+import MyBooks from "./pages/MyBooks"
+import Transactions from "./pages/Transactions"
+import Profile from "./pages/Profile"
 
 function App() {
   return (
@@ -19,11 +20,12 @@ function App() {
           <Route path="/books/add" element={<AddBook />} />
           <Route path="/mybooks" element={<MyBooks />} />
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

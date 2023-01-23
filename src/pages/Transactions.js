@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Table } from "react-bootstrap";
-import DashboardLayout from "../components/layout/DashboardLayout";
-import { getAllTransactions } from "../helpers/axiosHelper";
+import React, { useEffect, useState } from "react"
+import { Container, Row, Table } from "react-bootstrap"
+import DashboardLayout from "../components/layout/DashboardLayout"
+import { getAllTransactions } from "../helpers/axiosHelper"
 
 const Transactions = () => {
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState([])
   const fetchTransactions = async () => {
-    const res = await getAllTransactions();
-    setTransactions(res);
-  };
-
+    const res = await getAllTransactions()
+    setTransactions(res)
+  }
   useEffect(() => {
-    fetchTransactions();
-  }, []);
-
+    fetchTransactions()
+  }, [])
   return (
     <DashboardLayout>
       <Container>
         <Row className="p-5">
-          <Table striped boardered hover>
+          <Table striped bordered hover>
             <thead>
               <tr className="text-center">
                 <th>#</th>
@@ -37,8 +35,8 @@ const Transactions = () => {
                   <td style={{ width: "15%" }}>
                     <img
                       src={transaction.borrowedBook.thumbnail}
-                      alt=" "
-                      styles={{ width: "35%" }}
+                      alt=""
+                      style={{ width: "35%" }}
                     />
                   </td>
                   <td>{transaction.borrowedBook.title}</td>
@@ -54,7 +52,7 @@ const Transactions = () => {
                   >
                     {transaction.returnDate
                       ? new Date(transaction.returnDate).toLocaleDateString()
-                      : "Not Returned Yet"}
+                      : "Not returned yet"}
                   </td>
                 </tr>
               ))}
@@ -63,7 +61,7 @@ const Transactions = () => {
         </Row>
       </Container>
     </DashboardLayout>
-  );
-};
+  )
+}
 
-export default Transactions;
+export default Transactions
