@@ -1,15 +1,15 @@
-import React from "react"
-import { Button, Card } from "react-bootstrap"
-import { borrowBook, deleteBook } from "../helpers/axiosHelper"
-import { toast } from "react-toastify"
+import React from "react";
+import { Button, Card } from "react-bootstrap";
+import { borrowBook, deleteBook } from "../helpers/axiosHelper";
+import { toast } from "react-toastify";
 
-const BookCard = ({ book, fetchBooks }) => {
+const BookCard = ({ book, fetchBooks, user }) => {
   const handleBorrow = async (bookId) => {
     if (bookId) {
-      const { status, message } = await borrowBook(bookId)
-      status === "success" ? toast.success(message) : toast.warning(message)
+      const { status, message } = await borrowBook(bookId);
+      status === "success" ? toast.success(message) : toast.warning(message);
     }
-  }
+  };
   const handleDelete = async (bookId) => {
     if (
       window.confirm(
@@ -17,12 +17,12 @@ const BookCard = ({ book, fetchBooks }) => {
       )
     ) {
       if (bookId) {
-        const { status, message } = await deleteBook(bookId)
+        const { status, message } = await deleteBook(bookId);
 
-        toast[status](message) && fetchBooks()
+        toast[status](message) && fetchBooks();
       }
     }
-  }
+  };
   return (
     <Card style={{ width: "18rem", border: "none" }}>
       <Card.Img
@@ -35,23 +35,26 @@ const BookCard = ({ book, fetchBooks }) => {
           <Button
             variant="info"
             onClick={() => {
-              handleBorrow(book._id)
+              handleBorrow(book._id);
             }}
           >
             Borrow
           </Button>
-          <Button
-            variant="danger"
-            onClick={() => {
-              handleDelete(book._id)
-            }}
-          >
-            Delete
-          </Button>
+
+          {user?.role === "teacher" && (
+            <Button
+              variant="danger"
+              onClick={() => {
+                handleDelete(book._id);
+              }}
+            >
+              Delete
+            </Button>
+          )}
         </div>
       </Card.Body>
     </Card>
-  )
-}
+  );
+};
 
-export default BookCard
+export default BookCard;
