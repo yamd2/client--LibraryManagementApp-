@@ -1,14 +1,18 @@
-import { Container, Button } from "react-bootstrap/"
-import Nav from "react-bootstrap/Nav"
-import Navbar from "react-bootstrap/Navbar"
-import { useNavigate } from "react-router-dom"
+import { Container, Button } from "react-bootstrap/";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import { useDispatch, useSelector } from "react-redux";
 
-export const Header = ({ currentUser }) => {
-  const navigate = useNavigate()
+import { useNavigate } from "react-router-dom";
+import { logoutSuccess } from "../../redux/user/UserSlice";
+
+export const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.user);
   const handleLogout = () => {
-    sessionStorage.removeItem("user")
-    navigate("/")
-  }
+    dispatch(logoutSuccess()) && navigate("/");
+  };
   return (
     <Navbar bg="info" expand="md">
       <Container>
@@ -16,9 +20,9 @@ export const Header = ({ currentUser }) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            {currentUser?._id ? (
+            {userInfo?._id ? (
               <div className="d-flex align-items-center gap-2">
-                <i className="fa-solid fa-user"></i> Hi {currentUser?.fName}!
+                <i className="fa-solid fa-user"></i> Hi {userInfo?.fName}!
                 <Button onClick={() => handleLogout()}>Logout</Button>
               </div>
             ) : (
@@ -36,5 +40,5 @@ export const Header = ({ currentUser }) => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-  )
-}
+  );
+};

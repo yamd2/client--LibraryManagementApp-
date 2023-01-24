@@ -1,14 +1,20 @@
-import React, { useState } from "react"
-import { Button, Col, Container, Form, Row } from "react-bootstrap"
+import React, { useEffect, useState } from "react"
+import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap"
 import { InputeField } from "../components/InputeField/InputeField"
 import { DefaultLayout } from "../components/layout/DefaultLayout"
 import { Link, useNavigate } from "react-router-dom"
-import { loginUser } from "../helpers/axiosHelper"
-import { toast } from "react-toastify"
+import { useDispatch, useSelector } from "react-redux"
+import { loginAction } from "../redux/user/UserAction"
 
 const Login = () => {
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({})
   const navigate = useNavigate()
+  const { isLoading, isLoggedIn } = useSelector((state) => state.user)
+
+  useEffect(() => {
+    isLoggedIn && navigate("/books")
+  }, [isLoggedIn, navigate])
 
   const handleOnChange = (e) => {
     const { name, value } = e.target
@@ -21,14 +27,7 @@ const Login = () => {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault()
-
-    const { status, message, user } = await loginUser(formData)
-    toast[status](message)
-
-    if (status === "success") {
-      sessionStorage.setItem("user", JSON.stringify(user))
-      navigate("/books")
-    }
+    dispatch(loginAction(formData))
   }
 
   const inputs = [
@@ -63,8 +62,13 @@ const Login = () => {
                 ))}
 
                 <div>
-                  <Button variant="primary" type="submit">
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    className="d-flex align-items-center gap-3"
+                  >
                     Login
+                    <span>{isLoading && <Spinner animation="border" />}</span>
                   </Button>
                 </div>
               </Form>

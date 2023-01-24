@@ -52,13 +52,13 @@ export const updatePassword = async (passInfo) => {
         message: "Please Log in first!",
       }
     }
-    const res = axios.patch(userEP + "/password-update", passInfo, {
+    const { data } = await axios.patch(userEP + "/password-update", passInfo, {
       headers: {
         Authorization: userId,
       },
     })
 
-    return res
+    return data
   } catch (error) {
     return {
       status: "error",

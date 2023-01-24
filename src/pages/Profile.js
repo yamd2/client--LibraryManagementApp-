@@ -1,43 +1,39 @@
-import React, { useEffect, useState } from "react"
-import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap"
-import DashboardLayout from "../components/layout/DashboardLayout"
-import { toast } from "react-toastify"
-import { updatePassword } from "../helpers/axiosHelper"
+import React, { useState } from "react";
+import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import DashboardLayout from "../components/layout/DashboardLayout";
+import { toast } from "react-toastify";
+import { updatePassword } from "../helpers/axiosHelper";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
-  const [user, setUser] = useState()
-  const [showForm, setShowForm] = useState(false)
-  const [formData, setFormData] = useState({})
-
-  useEffect(() => {
-    const u = JSON.parse(sessionStorage.getItem("user"))
-    setUser(u)
-  }, [])
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({});
+  const { userInfo } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
     setFormData({
       ...formData,
       [name]: value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    const { currentPassword, password, confirmPassword } = formData
+    e.preventDefault();
+    const { currentPassword, password, confirmPassword } = formData;
 
     if (confirmPassword !== password) {
-      return toast.error("Confirm password and password do not match!")
+      return toast.error("Confirm password and password do not match!");
     }
 
-    const { data } = await updatePassword({
+    const { status, message } = await updatePassword({
       currentPassword,
       password,
-    })
+    });
 
-    toast[data.status](data.message)
-  }
+    toast[status](message);
+  };
 
   return (
     <DashboardLayout>
@@ -89,25 +85,27 @@ const Profile = () => {
               <ul>
                 <li>
                   <strong>Profile ID: </strong>
-                  {user?._id}
+                  {userInfo?._id}
                 </li>
                 <li>
                   <strong>Name: </strong>
-                  {`${user?.fName} ${user?.lName}`}
+                  {`${userInfo?.fName} ${userInfo?.lName}`}
                 </li>
                 <li>
                   <strong>Email: </strong>
-                  {user?.email}
+                  {userInfo?.email}
                 </li>
                 <li>
                   <strong>Status: </strong>
 
                   <span
                     className={
-                      user?.status === "active" ? "text-success" : "text-danger"
+                      userInfo?.status === "active"
+                        ? "text-success"
+                        : "text-danger"
                     }
                   >
-                    {user?.status}
+                    {userInfo?.status}
                   </span>
                 </li>
               </ul>
@@ -121,7 +119,7 @@ const Profile = () => {
         </Row>
       </Container>
     </DashboardLayout>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

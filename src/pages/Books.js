@@ -1,32 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Container, Row, Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import BooksList from "../components/BooksList";
 import DashboardLayout from "../components/layout/DashboardLayout";
-import { getBooks } from "../helpers/axiosHelper";
+
+import { getBooksAction } from "../redux/book/BookAction";
 
 const Books = () => {
-  const [books, setBooks] = useState([]);
-  const [user, setUser] = useState({});
-
-  const fetchAllBooks = async () => {
-    const response = await getBooks();
-
-    setBooks(response.books);
-  };
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.book);
 
   useEffect(() => {
-    const u = JSON.parse(sessionStorage.getItem("user"));
-    setUser(u);
-  }, []);
-  useEffect(() => {
-    fetchAllBooks();
-  }, []);
+    dispatch(getBooksAction());
+  }, [dispatch]);
 
   return (
     <DashboardLayout>
       <Container>
         <Row className="p-5">
-          <BooksList books={books} fetchBooks={fetchAllBooks} user={user} />
+          {isLoading && <Spinner animation="boarder" />}
+          <BooksList />
         </Row>
       </Container>
     </DashboardLayout>

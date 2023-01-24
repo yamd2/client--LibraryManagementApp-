@@ -1,31 +1,38 @@
-import React, { useState } from "react"
-import { DefaultLayout } from "../components/layout/DefaultLayout"
-import { Button, Container, Row, Col, Form } from "react-bootstrap"
-import { InputeField } from "../components/InputeField/InputeField"
-import { toast } from "react-toastify"
-import { postNewUser } from "../helpers/axiosHelper"
+import React, { useState } from "react";
+import { DefaultLayout } from "../components/layout/DefaultLayout";
+import { Button, Container, Row, Col, Form } from "react-bootstrap";
+import { InputeField } from "../components/InputeField/InputeField";
+import { toast } from "react-toastify";
+import { postNewUser } from "../helpers/axiosHelper";
+import { registerAction } from "../redux/user/UserAction";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const [form, setForm] = useState({})
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [form, setForm] = useState({});
 
   const handleOnChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setForm({
       ...form,
       [name]: value,
-    })
-  }
+    });
+  };
 
   const handleOnSubmit = async (e) => {
-    e.preventDefault()
-    const { confirmPassword, ...rest } = form
+    e.preventDefault();
+    const { confirmPassword, ...rest } = form;
     if (confirmPassword !== rest.password) {
-      return alert("Password do not match")
+      return alert("Password do not match");
     }
-    const { status, message } = await postNewUser(rest)
 
-    toast[status](message)
-  }
+    dispatch(registerAction(rest) && navigate("/"));
+    const { status, message } = await postNewUser(rest);
+
+    toast[status](message);
+  };
 
   const inputs = [
     {
@@ -63,7 +70,7 @@ const Register = () => {
       placeholder: "*******",
       required: true,
     },
-  ]
+  ];
 
   return (
     <DefaultLayout>
@@ -120,7 +127,7 @@ const Register = () => {
         </Row>
       </Container>
     </DefaultLayout>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

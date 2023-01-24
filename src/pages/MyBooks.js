@@ -1,28 +1,27 @@
-import React, { useEffect, useState } from "react"
-import { Button, Container, Row, Table } from "react-bootstrap"
-import { toast } from "react-toastify"
-import DashboardLayout from "../components/layout/DashboardLayout"
-import { getBorrowedBooks, returnBook } from "../helpers/axiosHelper"
+import React, { useEffect } from "react";
+import { Button, Container, Row, Table } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+
+import DashboardLayout from "../components/layout/DashboardLayout";
+
+import {
+  getBorrowedBooksAction,
+  returnBookAction,
+} from "../redux/book/BookAction";
 
 const MyBooks = () => {
-  const [books, setBooks] = useState([])
-  const fetchBooksBorrowed = async () => {
-    const response = await getBorrowedBooks()
-    setBooks(response)
-  }
+  const dispatch = useDispatch();
+  const { borrowedBooks } = useSelector((state) => state.book);
+
   useEffect(() => {
-    fetchBooksBorrowed()
-  }, [])
+    dispatch(getBorrowedBooksAction());
+  }, [dispatch]);
 
   const handleReturn = async (bookId) => {
     if (window.confirm("Are you sure you want to return this book?")) {
-      const { status, message } = await returnBook(bookId)
-
-      status === "success"
-        ? toast.success(message) && fetchBooksBorrowed()
-        : toast.error(message)
+      dispatch(returnBookAction(bookId));
     }
-  }
+  };
   return (
     <DashboardLayout>
       <Container>
@@ -38,7 +37,7 @@ const MyBooks = () => {
               </tr>
             </thead>
             <tbody>
-              {books.map((book, i) => (
+              {borrowedBooks.map((book, i) => (
                 <tr key={book._id} className="text-center">
                   <td>{i + 1}</td>
                   <td style={{ width: "15%" }}>
@@ -61,7 +60,7 @@ const MyBooks = () => {
         </Row>
       </Container>
     </DashboardLayout>
-  )
-}
+  );
+};
 
-export default MyBooks
+export default MyBooks;
