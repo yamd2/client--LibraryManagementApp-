@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { Container, Row, Table } from "react-bootstrap"
+import { useDispatch, useSelector } from "react-redux"
 import DashboardLayout from "../components/layout/DashboardLayout"
-import { getAllTransactions } from "../helpers/axiosHelper"
+import { getTransactionsAction } from "../redux/transaction/TransactionAction"
 
 const Transactions = () => {
-  const [transactions, setTransactions] = useState([])
-  const fetchTransactions = async () => {
-    const res = await getAllTransactions()
-    setTransactions(res)
-  }
+  const dispatch = useDispatch()
+
+  const { transactions } = useSelector((state) => state.transaction)
+
   useEffect(() => {
-    fetchTransactions()
-  }, [])
+    dispatch(getTransactionsAction())
+  }, [dispatch])
   return (
     <DashboardLayout>
       <Container>

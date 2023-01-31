@@ -1,42 +1,106 @@
-import React, { useState } from "react";
-import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
-import DashboardLayout from "../components/layout/DashboardLayout";
-import { toast } from "react-toastify";
-import { updatePassword } from "../helpers/axiosHelper";
-import { useSelector } from "react-redux";
+import React, { useState } from "react"
+import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap"
+import DashboardLayout from "../components/layout/DashboardLayout"
+import { toast } from "react-toastify"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  editProfileAction,
+  updatePasswordAction,
+} from "../redux/user/UserAction"
 
 const Profile = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({});
-  const { userInfo } = useSelector((state) => state.user);
+  const [showForm, setShowForm] = useState(false)
+  const [formData, setFormData] = useState({})
+  const { userInfo } = useSelector((state) => state.user)
+  const [showProfileEditForm, setShowProfileEditForm] = useState(false)
+  const [profileFormData, setProfileFormData] = useState(userInfo)
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-
+    const { name, value } = e.target
     setFormData({
       ...formData,
       [name]: value,
-    });
-  };
+    })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { currentPassword, password, confirmPassword } = formData;
-
+    e.preventDefault()
+    const { currentPassword, password, confirmPassword } = formData
     if (confirmPassword !== password) {
-      return toast.error("Confirm password and password do not match!");
+      return toast.error("Confirm password and password do not match!")
     }
+    dispatch(updatePasswordAction({ currentPassword, password }))
+    setFormData({ currentPassword: "", password: "", confirmPassword: "" })
+  }
 
-    const { status, message } = await updatePassword({
-      currentPassword,
-      password,
-    });
+  const handleOnProfileChange = (e) => {
+    const { name, value } = e.target
+    setProfileFormData({
+      ...profileFormData,
+      [name]: value,
+    })
+  }
 
-    toast[status](message);
-  };
+  const handleOnProfileSubmit = (e) => {
+    e.preventDefault()
+
+    if (
+      window.confirm("Are you sure you want to edit your profile information?")
+    ) {
+      dispatch(editProfileAction(profileFormData))
+      setShowProfileEditForm(false)
+    }
+  }
 
   return (
     <DashboardLayout>
+      <Modal
+        show={showProfileEditForm}
+        onHide={() => setShowProfileEditForm(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Profile Information</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="p-3">
+            <Form onSubmit={handleOnProfileSubmit}>
+              <Form.Group>
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={profileFormData?.fName}
+                  name="fName"
+                  onChange={handleOnProfileChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={profileFormData?.lName}
+                  name="lName"
+                  onChange={handleOnProfileChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={profileFormData?.email}
+                  disabled
+                  name="email"
+                  onChange={handleOnProfileChange}
+                />
+              </Form.Group>
+
+              <Button type="submit" variant="info">
+                Edit Profile
+              </Button>
+            </Form>
+          </div>
+        </Modal.Body>
+      </Modal>
       <Modal show={showForm} onHide={() => setShowForm(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Update Password</Modal.Title>
@@ -112,6 +176,9 @@ const Profile = () => {
             </div>
           </Col>
           <Col md={4} className="d-flex align-items-center">
+            <Button variant="dark" onClick={() => setShowProfileEditForm(true)}>
+              Edit Profile
+            </Button>
             <Button variant="dark" onClick={() => setShowForm(true)}>
               Update Password
             </Button>
@@ -119,7 +186,7 @@ const Profile = () => {
         </Row>
       </Container>
     </DashboardLayout>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

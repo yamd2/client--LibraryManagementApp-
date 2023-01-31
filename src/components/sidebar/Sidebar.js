@@ -1,8 +1,8 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-const Sidebar = ({ currentUser }) => {
-  const { userInfo } = useSelector((state) => state.user);
+import React from "react"
+import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+const Sidebar = () => {
+  const { userInfo } = useSelector((state) => state.user)
   return (
     <div className="sidebar bg-info">
       <div className="top">
@@ -55,7 +55,7 @@ const Sidebar = ({ currentUser }) => {
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

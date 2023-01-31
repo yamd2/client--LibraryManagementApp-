@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   isLoading: false,
@@ -8,50 +8,59 @@ const initialState = {
     : {},
   response: {},
   error: {},
-};
+}
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     requestPending: (state) => {
-      state.isLoading = true;
+      state.isLoading = true
     },
     loginSuccess: (state, action) => {
-      state.isLoading = false;
-      state.userInfo = action.payload;
-      state.error = {};
-      state.isLoggedIn = true;
-
-      sessionStorage.setItem("user", JSON.stringify(action.payload));
+      state.isLoading = false
+      state.userInfo = action.payload
+      state.error = {}
+      state.isLoggedIn = true
+      sessionStorage.setItem("user", JSON.stringify(action.payload))
     },
     logoutSuccess: (state) => {
-      state.userInfo = {};
-      state.error = {};
-      state.isLoading = false;
-      state.isLoggedIn = false;
-      sessionStorage.removeItem("user");
+      state.userInfo = {}
+      state.error = {}
+      state.isLoading = false
+      state.isLoggedIn = false
+      sessionStorage.removeItem("user")
     },
-    registrationSuccess: (state, action) => {
-      state.isLoading = false;
-      state.response = action.payload;
+    registerSuccess: (state, action) => {
+      state.isLoading = false
+      state.response = action.payload
     },
-
     requestFailed: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
+      state.isLoading = false
+      state.error = action.payload
+    },
+    requestSuccess: (state, action) => {
+      state.isLoading = false
+      state.response = action.payload
+    },
+    getUserSuccess: (state, action) => {
+      state.isLoading = false
+      state.userInfo = action.payload
+      sessionStorage.setItem("user", JSON.stringify(action.payload))
     },
   },
-});
+})
 
-const { reducer, actions } = userSlice;
+const { reducer, actions } = userSlice
 
 export const {
   requestPending,
   requestFailed,
-  registrationSuccess,
+  registerSuccess,
   loginSuccess,
   logoutSuccess,
-} = actions;
+  requestSuccess,
+  getUserSuccess,
+} = actions
 
-export default reducer;
+export default reducer

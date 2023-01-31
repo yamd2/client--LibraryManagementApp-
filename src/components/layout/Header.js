@@ -1,18 +1,17 @@
-import { Container, Button } from "react-bootstrap/";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import { useDispatch, useSelector } from "react-redux";
-
-import { useNavigate } from "react-router-dom";
-import { logoutSuccess } from "../../redux/user/UserSlice";
+import { Container, Button } from "react-bootstrap/"
+import Nav from "react-bootstrap/Nav"
+import Navbar from "react-bootstrap/Navbar"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { logoutSuccess } from "../../redux/user/UserSlice"
 
 export const Header = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { userInfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { userInfo } = useSelector((state) => state.user)
   const handleLogout = () => {
-    dispatch(logoutSuccess()) && navigate("/");
-  };
+    dispatch(logoutSuccess()) && navigate("/")
+  }
   return (
     <Navbar bg="info" expand="md">
       <Container>
@@ -40,5 +39,5 @@ export const Header = () => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-  );
-};
+  )
+}

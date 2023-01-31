@@ -1,27 +1,25 @@
-import React, { useEffect } from "react";
-import { Button, Container, Row, Table } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-
-import DashboardLayout from "../components/layout/DashboardLayout";
-
+import React, { useEffect } from "react"
+import { Button, Container, Row, Table } from "react-bootstrap"
+import { useDispatch, useSelector } from "react-redux"
+import DashboardLayout from "../components/layout/DashboardLayout"
 import {
   getBorrowedBooksAction,
   returnBookAction,
-} from "../redux/book/BookAction";
+} from "../redux/book/BookAction"
 
 const MyBooks = () => {
-  const dispatch = useDispatch();
-  const { borrowedBooks } = useSelector((state) => state.book);
+  const dispatch = useDispatch()
+  const { borrowedBooks } = useSelector((state) => state.book)
 
   useEffect(() => {
-    dispatch(getBorrowedBooksAction());
-  }, [dispatch]);
+    dispatch(getBorrowedBooksAction())
+  }, [dispatch])
 
   const handleReturn = async (bookId) => {
     if (window.confirm("Are you sure you want to return this book?")) {
-      dispatch(returnBookAction(bookId));
+      dispatch(returnBookAction(bookId))
     }
-  };
+  }
   return (
     <DashboardLayout>
       <Container>
@@ -60,7 +58,7 @@ const MyBooks = () => {
         </Row>
       </Container>
     </DashboardLayout>
-  );
-};
+  )
+}
 
-export default MyBooks;
+export default MyBooks

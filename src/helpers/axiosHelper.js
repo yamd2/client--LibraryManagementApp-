@@ -17,6 +17,24 @@ const getUserId = () => {
   return
 }
 
+export const getUser = async () => {
+  try {
+    const userId = getUserId()
+
+    const { data } = await axios.get(userEP, {
+      headers: {
+        Authorization: userId,
+      },
+    })
+    return data
+  } catch (error) {
+    return {
+      status: "error",
+      message: error.message,
+    }
+  }
+}
+
 export const postNewUser = async (userData) => {
   try {
     const { data } = await axios.post(userEP, userData)
@@ -58,6 +76,29 @@ export const updatePassword = async (passInfo) => {
       },
     })
 
+    return data
+  } catch (error) {
+    return {
+      status: "error",
+      message: error.message,
+    }
+  }
+}
+
+export const editUserInfo = async (userData) => {
+  try {
+    const userId = getUserId()
+    if (!userId) {
+      return {
+        status: "error",
+        message: "Please Log in first!",
+      }
+    }
+    const { data } = await axios.patch(userEP + "/edit-user", userData, {
+      headers: {
+        Authorization: userId,
+      },
+    })
     return data
   } catch (error) {
     return {

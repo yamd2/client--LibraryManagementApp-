@@ -2,8 +2,8 @@ import React, { useState } from "react"
 import { Button, Col, Form, Spinner } from "react-bootstrap"
 import DashboardLayout from "../components/layout/DashboardLayout"
 import img from "../assets/reg-bg.jpg"
-import { addBook } from "../helpers/axiosHelper"
-import { toast } from "react-toastify"
+import { useDispatch, useSelector } from "react-redux"
+import { addBookAction } from "../redux/book/BookAction"
 
 const initialState = {
   title: "",
@@ -14,25 +14,18 @@ const initialState = {
 }
 
 const AddBook = () => {
+  const dispatch = useDispatch()
+  const { isLoading } = useSelector((state) => state.book)
   const [formData, setFormData] = useState(initialState)
-  const [isLoading, setIsLoading] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
-
     setFormData({ ...formData, [name]: value })
   }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setIsLoading(true)
-    const { status, message } = await addBook(formData)
-
-    if (status) {
-      setIsLoading(false)
-      setFormData(initialState)
-      return toast[status](message)
-    }
+    dispatch(addBookAction(formData))
+    setFormData(initialState)
   }
 
   return (

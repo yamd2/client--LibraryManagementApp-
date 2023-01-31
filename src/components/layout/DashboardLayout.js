@@ -1,7 +1,7 @@
-import React from "react";
-import Sidebar from "../sidebar/Sidebar";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
+import React from "react"
+import Sidebar from "../sidebar/Sidebar"
+import { Footer } from "./Footer"
+import { Header } from "./Header"
 
 const DashboardLayout = ({ children }) => {
   return (
@@ -13,7 +13,7 @@ const DashboardLayout = ({ children }) => {
         <Footer />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DashboardLayout;
+export default DashboardLayout

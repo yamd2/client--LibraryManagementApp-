@@ -1,16 +1,18 @@
-import React from "react";
-import { Button, Card } from "react-bootstrap";
+import React from "react"
+import { Button, Card } from "react-bootstrap"
+import { useDispatch, useSelector } from "react-redux"
+import { borrowBookAction, deleteBookAction } from "../redux/book/BookAction"
 
-import { useDispatch, useSelector } from "react-redux";
-import { borrowBookAction, deleteBookAction } from "../redux/book/BookAction";
-
-const BookCard = ({ book }) => {
-  const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.user);
+const BookCard = ({ book, fetchBooks }) => {
+  const dispatch = useDispatch()
+  const { userInfo } = useSelector((state) => state.user)
 
   const handleBorrow = async (bookId) => {
-    dispatch(borrowBookAction(bookId));
-  };
+    if (bookId) {
+      dispatch(borrowBookAction(bookId))
+    }
+  }
+
   const handleDelete = async (bookId) => {
     if (
       window.confirm(
@@ -18,10 +20,10 @@ const BookCard = ({ book }) => {
       )
     ) {
       if (bookId) {
-        dispatch(deleteBookAction(bookId));
+        dispatch(deleteBookAction(bookId))
       }
     }
-  };
+  }
   return (
     <Card style={{ width: "18rem", border: "none" }}>
       <Card.Img
@@ -34,7 +36,7 @@ const BookCard = ({ book }) => {
           <Button
             variant="info"
             onClick={() => {
-              handleBorrow(book._id);
+              handleBorrow(book._id)
             }}
           >
             Borrow
@@ -44,7 +46,7 @@ const BookCard = ({ book }) => {
             <Button
               variant="danger"
               onClick={() => {
-                handleDelete(book._id);
+                handleDelete(book._id)
               }}
             >
               Delete
@@ -53,7 +55,7 @@ const BookCard = ({ book }) => {
         </div>
       </Card.Body>
     </Card>
-  );
-};
+  )
+}
 
-export default BookCard;
+export default BookCard
